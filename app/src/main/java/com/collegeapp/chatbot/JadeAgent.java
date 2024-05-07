@@ -1,5 +1,7 @@
 package com.collegeapp.chatbot;
 
+import com.collegeapp.chatbot.msgtree.ChatOptionManager;
+
 import java.util.ArrayList;
 
 import jade.core.Agent;
@@ -7,7 +9,9 @@ import jade.core.behaviours.TickerBehaviour;
 
 public class JadeAgent extends Agent
 {
-    JadeManager owner;
+    JadeManager Owner;
+
+    static boolean init = true;
 
     static String[] Items = new String[]
     {
@@ -21,9 +25,11 @@ public class JadeAgent extends Agent
 
     static boolean confirmingChoices = false;
 
+    static ChatOptionManager COM;
+
     @Override
     protected void setup() {
-        owner = JadeManager.Singleton;
+        Owner = JadeManager.Singleton;
 
         addBehaviour(new TickerBehaviour(this, 90) {
             @Override
@@ -33,8 +39,22 @@ public class JadeAgent extends Agent
         });
     }
 
+    static void initialize()
+    {
+        COM = new ChatOptionManager(
+
+        );
+        //TODO: IMPLEMENT THIS SHIT AAAAAAAAAAAA
+    }
+
     public static void onTick()
     {
+        if(init)
+        {
+            init = false;
+            initialize();
+        }
+
         JadeManager owner = JadeManager.Singleton;
         String cmsg = owner.popClientMessage();
         while (cmsg != null)
