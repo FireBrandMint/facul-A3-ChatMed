@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+>
+
+<TabHost
+android:id="@+id/tabs"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+>
+
+<TabWidget
+android:id="@android:id/tabs"
+android:layout_width="fill_parent"
+android:layout_height="60px"
+/>
+
+<FrameLayout
+android:id="@android:id/tabcontent"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:paddingTop="60px"
+>
+
+<LinearLayout android:id="@+id/content1"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:padding="10px"
+>
+
+			<TextView
+				android:id="@+id/senderTxtView"
+				android:layout_width="wrap_content"
+				android:textSize="18px"
+				android:layout_height="wrap_content"
+				android:text="Sender"/>	
+			<EditText
+				android:id="@+id/sender"
+				android:singleLine="true"
+				android:editable="false"
+				android:textSize="15px"
+				android:layout_width="fill_parent"
+				android:cursorVisible="false"
+				android:padding="5px"
+				android:layout_height="wrap_content"/>
+			
+			<TextView
+				android:id="@+id/receiverTxtView"
+				android:layout_width="wrap_content"
+				android:textSize="18px"
+				android:layout_height="wrap_content"
+				android:text="Receiver">
+			</TextView>
+			<ListView
+				android:id="@+id/receiverList"
+				android:choiceMode="singleChoice"
+				android:layout_width="fill_parent"
+				android:layout_height="60px"
+			/>
+			
+			<TextView
+				android:id="@+id/commActTxtView"
+				android:layout_width="wrap_content"
+				android:textSize="18px"
+				android:layout_height="wrap_content"
+				android:text="Communicative Act"/>
+			<Spinner
+				android:id="@+id/commAct"
+				android:layout_width="fill_parent"
+				android:padding="5px"
+				android:layout_height="wrap_content"/>
+
+			<TextView
+				android:id="@+id/widget41"
+				android:layout_width="wrap_content"
+				android:textSize="18px"
+				android:layout_height="wrap_content"
+				android:text="Content"/>
+			<EditText
+				android:id="@+id/content"
+				android:textSize="15px"
+				android:layout_width="fill_parent"
+				android:padding="5px"
+				android:layout_height="50px"/>
+			
+			<Button
+				android:id="@+id/sendBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="10px"
+				android:text="Send"/>
+
+</LinearLayout>
+
+
+<LinearLayout android:id="@+id/content2"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+>
+
+  	<Button
+			android:id="@+id/clearbtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="10px"
+			android:text="Clear List"/>
+  	
+  	<ListView
+				android:id="@+id/messageList"
+				android:layout_width="fill_parent"
+				android:layout_weight="1"
+				android:layout_height="fill_parent"
+	/>
+				
+	
+</LinearLayout>
+
+</FrameLayout>
+
+</TabHost>
+
+</LinearLayout>
+

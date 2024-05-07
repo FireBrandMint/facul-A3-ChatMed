@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="300px"
+android:layout_height="fill_parent"
+>
+
+<TextView
+	android:id="@+id/agentNameTxtView"
+	android:layout_width="wrap_content"
+	android:textSize="18px"
+	android:layout_height="wrap_content"
+	android:text="Name"/>
+			
+
+
+ <LinearLayout android:id="@+id/content1"
+	android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+
+			<CheckBox 
+				android:id="@+id/checkFullName"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingRight="5px"/>
+			
+			<EditText
+				android:id="@+id/agentNameEdit"
+				android:singleLine="true"
+				android:textSize="15px"
+				android:layout_width="200px"
+     			 
+				android:layout_height="wrap_content"
+				android:paddingLeft="5px"/>
+	</LinearLayout>
+			
+			
+	<TextView
+		android:id="@+id/addressTxt"
+		android:layout_width="wrap_content"
+		android:textSize="18px"
+		android:layout_height="wrap_content"
+		android:text="Address"/>
+				
+	<EditText
+		android:id="@+id/addressEdit"
+		android:singleLine="true"
+		android:textSize="15px"
+		android:layout_width="fill_parent"
+		android:padding="5px"
+		android:layout_height="wrap_content"/>
+
+	<LinearLayout android:id="@+id/content2"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		
+		<Button
+			android:id="@+id/okBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Ok"/>
+		
+		<Button
+			android:id="@+id/cancelBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Cancel"/>
+
+	</LinearLayout> 
+
+</LinearLayout>
+

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+>
+<TextView
+	android:id="@+id/widget26Det"
+	android:layout_width="wrap_content"
+	android:textSize="18px"
+	android:layout_height="wrap_content"
+	android:text="Sender"/>	
+
+<EditText
+	android:id="@+id/senderDet"
+	android:singleLine="true"
+	android:editable="false"
+	android:textSize="15px"
+	android:layout_width="fill_parent"
+	android:cursorVisible="false"
+	android:padding="5px"
+	android:layout_height="wrap_content"/>
+
+<TextView
+	android:id="@+id/widget28Det"
+	android:layout_width="wrap_content"
+	android:textSize="18px"
+	android:layout_height="wrap_content"
+	android:text="Receiver"
+/>
+
+<ListView
+	android:id="@+id/receiverListDet"
+	android:layout_width="fill_parent"
+	android:layout_height="60px"/>
+
+<TextView
+	android:id="@+id/widget30Det"
+	android:layout_width="wrap_content"
+	android:textSize="18px"
+	android:layout_height="wrap_content"
+	android:text="Communicative Act"
+/>
+<EditText
+	android:id="@+id/comActDet"
+	android:singleLine="true"
+	android:editable="false"
+	android:textSize="15px"
+	android:layout_width="fill_parent"
+	android:cursorVisible="false"
+	android:padding="5px"
+	android:layout_height="wrap_content"/>
+
+<TextView
+	android:id="@+id/widget4Det1"
+	android:layout_width="wrap_content"
+	android:textSize="18px"
+	android:layout_height="wrap_content"
+	android:text="Content"
+/>
+
+<EditText
+	android:id="@+id/contentDet"
+	android:editable="false"
+	android:textSize="15px"
+	android:layout_width="fill_parent"
+	android:cursorVisible="false"
+	android:padding="5px"
+	android:layout_height="50px"/>
+
+
+<Button
+	android:id="@+id/replyBtnDet"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:text="Reply"
+	android:padding="10px"
+/>
+</LinearLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="send_msg_tab_indicator">Send Msg</string>
+	<string name="recv_msg_tab_indicator">Msg List</string>
+
+    <string name="activity_local_jade_controller">Jade Controller</string>
+    <string name="app_name">Dummy Agent</string>
+    <string name="send_message">Send message</string>
+    <string name="send_and_recv_message">Send and Receive message</string>
+    <string name="msg_details">Message Details</string>
+    
+    <!-- DIALOG PROPERTIES -->
+    <string name="dialog_title">AID</string>
+    
+    
+    <!--  ERROR MESSAGES -->
+    <string name="error_msg_empty_aid">AID name cannot be empty!</string>
+    <string name="error_msg_stale_proxy">Error getting Jade agent proxy</string>
+    <string name="error_msg_connect">Error connecting to Android MicroRuntime Service</string>
+	<string name="error_msg_generic">Generic error contacting Jade platform</string>
+	
+	
+	<string name="menu_item_exit">Exit</string>
+	
+	<string name="statusbar_msg_connected">Connected to service</string>
+	<string name="notify_msg_received">A message has arrived</string>
+
+    <string name="receiver">receiver</string>
+    <string name="content">content</string>
+    <string name="confirm">confirm</string>
+    <string name="close">close</string>
+
+	
+	<!-- JADE CONNECTION PROPERTIES -->
+	<string name="host">10.0.2.2</string>
+	<string name="port">1099</string>
+	<string name="msisdn">android</string>
+	
+	
+	<!-- CONTEXT MENU ITEMS -->
+	<string name="menu_item_add">Add</string>
+	<string name="menu_item_edit">Edit</string>
+	<string name="menu_item_remove">Remove</string>
+	<string name="menu_item_removeall">Remove All</string>
+	
+</resources>

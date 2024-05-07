@@ -1,0 +1,129 @@
+<?xml version="1.0" ?>
+<project name="JadeAndroid" default="dist">
+    <property file="build.properties" />	
+    <property name="leap-home-dir" value="${jade-home-dir}/leap" />
+	
+    <!-- Input directories -->
+    <property name="srcdir" value="src" />
+    <property name="docdir" value="doc" />
+	<property name="demo-src" value="demo/src" />
+	
+    <!-- Output directories -->
+    <property name="lib" value="lib" />
+	<property name="dist" value="demo/dist" />
+	<property name="demolibs" value="demo/libs" />
+    <property name="classes" value="classes" />  
+	
+    <!-- The final package file to generate -->
+    <property name="addon-name" value="../${ant.project.name}AddOn.zip" />
+	<property name="jade-leap-android-jar" value="lib/JadeLeapAndroid.jar" />
+	
+    <property name="android-jar" value="${android-sdk-folder}/platforms/${android-target}/android.jar" />
+    
+    <target name="dirs">
+        <mkdir dir="${classes}" />
+    </target>
+	
+	<target name="clean">
+		<delete dir="lib" />
+		<delete dir="${classes}" />
+	</target>
+	
+	<target name="clean-demo">
+		<delete dir="${demolibs}" />
+		<delete dir="demo/gen" />
+		<delete dir="demo/bin" />
+		<delete dir="demo/doc" />
+	</target>
+	
+	<target name="compile-leap-pjava" depends="clean, dirs" >
+		<delete dir="lib"/>
+		<mkdir dir="lib" />
+		<ant dir="${leap-home-dir}" target="setup" inheritAll="false">
+			<property name="pjava" value="true"/>
+		   	<property name="root" value="${leap-home-dir}"/>
+		</ant>
+		<copy overwrite="true" file="src/jade/util/Logger.java" todir="${leap-home-dir}/pjava/src/jade/util/"/>
+		<copy file="${jade-home-dir}/src/jade/wrapper/gateway/GatewayBehaviour.java" todir="${leap-home-dir}/pjava/src/jade/wrapper/gateway"/>
+		<copy file="${jade-home-dir}/src/jade/wrapper/gateway/GatewayAgent.java" todir="${leap-home-dir}/pjava/src/jade/wrapper/gateway"/>
+		
+		<javac srcdir="${leap-home-dir}/pjava/src"
+			destdir="${classes}"
+			debug="${debug-build}"
+			debuglevel="vars,lines,source"
+			optimize="${optimised-build}"
+			deprecation="off"
+			bootclasspath="${android-jar}"
+			classpath="${jade-home-dir}/lib/commons-codec/commons-codec-1.3.jar"
+			fork="yes"
+			compiler="classic"
+			source="1.5"
+		    target="1.5">
+			<exclude name="jade/AppletBoot.java"/>
+		</javac>
+		<ant dir="${leap-home-dir}" target="reset" inheritAll="false">
+			<property name="pjava" value="true"/>
+			<property name="root" value="${leap-home-dir}"/>
+		</ant>
+	</target>
+
+	<!-- Compile this project's .java files into .class files. -->
+	<target name="compile" depends="compile-leap-pjava" >
+		<javac encoding="ascii" target="1.5" debug="true" extdirs=""
+	                destdir="${classes}"
+	                bootclasspath="${android-jar}" srcdir="${srcdir}"/>
+	</target>
+	
+	<target name="jar" depends="compile" description="Create the jar of the Jade4Android add-on" >
+		
+		<jar destfile="lib/JadeLeapAndroid.jar" basedir="${classes}" />
+	</target>
+	
+    <!-- Create the .apk file to the DummyAgent demo -->
+    <target name="demo" depends="clean-demo" description="Create the .apk file of the DummyAgent Demo (signed with debug key).">
+		<mkdir dir="${demolibs}" />
+		<copy overwrite="true" file="lib/JadeLeapAndroid.jar" todir="${demolibs}"/>
+		
+		<propertyfile file="demo/local.properties">
+			<entry  key="sdk.dir" value="${android-sdk-folder}"/>
+		</propertyfile>
+		<propertyfile file="demo/default.properties">
+			<entry  key="target" value="${android-target}"/>
+		</propertyfile>
+		<ant antfile="demo/build.xml" target="debug" inheritAll="false"/>
+	</target>
+    
+
+    <target name="dist" depends="clean-demo, jar" description="Create the distribution file of the Jade4Android add-on">
+     <echo>Create distribution files for Jade Android Add-on</echo>
+   
+     <zip destfile="${addon-name}" basedir="../../../../../..">
+       <include name="add-ons/jade4android/*"/>
+       <include name="add-ons/jade4android/src/**"/>
+       <include name="add-ons/jade4android/doc/**"/>
+       <include name="add-ons/jade4android/lib/**"/>
+       <include name="add-ons/jade4android/demo/**"/> 
+	   <exclude name="add-ons/jade4android/classes/**"/> 
+	   <exclude name="add-ons/jade4android/examples/**"/> 
+     </zip>
+    </target>
+    	
+
+    <target name="apidoc" description="Generate javadoc for both android add-on and dummy agent demo">
+    	<javadoc sourcepath="${srcdir}"
+    		     destdir="${docdir}/API"
+    		     bootclasspath="${android-jar}"
+    			 classpath="${jade-leap-android-jar} "
+    		     verbose="false"
+    		     packagenames="jade.android.*"
+        />
+        <javadoc sourcepath="${demo-src}"
+    		     destdir="demo/doc/API"
+    		     classpath="${jade-leap-android-jar}"
+                 bootclasspath="${android-jar}"
+    		     verbose="false"
+    		     packagenames="demo.dummyagent.*"
+        />
+                	 
+	</target>
+</project>
