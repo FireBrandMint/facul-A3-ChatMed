@@ -1,5 +1,11 @@
 package com.collegeapp.chatbot;
 
+import com.collegeapp.chatbot.chatmed.ChatMed;
+import com.collegeapp.chatbot.chatmed.CommandOnClient;
+import com.collegeapp.chatbot.chatmed.DoctorAccess;
+import com.collegeapp.chatbot.chatmed.DoctorInfo;
+import com.collegeapp.chatbot.chatmed.DoctorRate;
+import com.collegeapp.chatbot.chatmed.test.TestChatClientInfo;
 import com.collegeapp.chatbot.msgtree.ChatOptionManager;
 
 import java.util.ArrayList;
@@ -25,7 +31,15 @@ public class JadeAgent extends Agent
 
     static boolean confirmingChoices = false;
 
-    static ChatOptionManager COM;
+    static TestChatClientInfo sampleUser = new TestChatClientInfo("Booris");
+
+    static DoctorInfo[] doctors =
+            {
+                    new DoctorInfo("André", 6, "oculista"),
+                    new DoctorInfo("George", 7, "oculista")
+            };
+
+    static ChatMed<TestChatClientInfo> chatMed;
 
     @Override
     protected void setup() {
@@ -41,10 +55,11 @@ public class JadeAgent extends Agent
 
     static void initialize()
     {
-        COM = new ChatOptionManager(
-
-        );
-        //TODO: IMPLEMENT THIS SHIT AAAAAAAAAAAA
+        CommandOnClient<TestChatClientInfo> a = JadeAgent::sendMsg;
+        DoctorAccess b = () -> doctors;
+        DoctorRate<TestChatClientInfo> c = JadeAgent::onClientRate;
+        
+        chatMed = new ChatMed<TestChatClientInfo>(a, b, c);
     }
 
     public static void onTick()
@@ -55,10 +70,15 @@ public class JadeAgent extends Agent
             initialize();
         }
 
+        chatMed.tick();
+
         JadeManager owner = JadeManager.Singleton;
         String cmsg = owner.popClientMessage();
         while (cmsg != null)
         {
+
+            chatMed.receiveMessage(sampleUser, cmsg);
+            /*
             if(cmsg.equals("oi"))
                 owner.notifyBotMessage("Olá, atendimento do fast food aqui.");
             else if(cmsg.contains("google"))
@@ -123,9 +143,21 @@ public class JadeAgent extends Agent
                 owner.notifyBotMessage("Confirmação de compra abortada.");
             }
 
-
-            cmsg = owner.popClientMessage();
+            */
         }
+    }
+
+    static void sendMsg(TestChatClientInfo c, String msg)
+    {
+        JadeManager.Singleton.notifyBotMessage(msg);
+    }
+
+    static boolean onClientRate(TestChatClientInfo client, DoctorInfo subject, int rating)
+    {
+        //avg rating = (this rating + avg rating) / 2
+        subject.rating = (subject.rating + rating) >> 1;
+
+        return true;
     }
 
     private static void loopBackup()
