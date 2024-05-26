@@ -44,10 +44,14 @@ public class JadeAgent extends Agent
 
     static void initialize()
     {
+        //função para o sistema mandar a mensagem pro cliente
         CommandOnClient<TestChatClientInfo> a = JadeAgent::sendMsg;
+        //função para o sistema ver doutores que existem
         DoctorAccess b = () -> doctors;
+        //função para quando o cliente avalia o medico
         DoctorRate<TestChatClientInfo> c = JadeAgent::onClientRate;
-        
+
+        //conecta estas funções ao sistema
         chatMed = new ChatMed<TestChatClientInfo>(a, b, c);
     }
 
@@ -63,8 +67,10 @@ public class JadeAgent extends Agent
 
         JadeManager owner = JadeManager.Singleton;
         String cmsg = owner.popClientMessage();
+        //enquanto mensagens existem, responder a elas
         while (cmsg != null)
         {
+            //mande mensagem para o sistema
             chatMed.receiveMessage(sampleUser, cmsg);
             cmsg = owner.popClientMessage();
         }

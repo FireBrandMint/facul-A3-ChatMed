@@ -141,7 +141,7 @@ public class ChatMed<ChatClientInfo>
 
                 doctorCache = null;
 
-                sendMsg.apply(responsible, msg);
+                sendMsg.apply(responsible, result);
             }
             else if(msg.equals("consultas disponíveis") || msg.equals("consultas disponiveis"))
             {
