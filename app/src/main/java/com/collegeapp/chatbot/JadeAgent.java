@@ -6,7 +6,6 @@ import com.collegeapp.chatbot.chatmed.DoctorAccess;
 import com.collegeapp.chatbot.chatmed.DoctorInfo;
 import com.collegeapp.chatbot.chatmed.DoctorRate;
 import com.collegeapp.chatbot.chatmed.test.TestChatClientInfo;
-import com.collegeapp.chatbot.msgtree.ChatOptionManager;
 
 import java.util.ArrayList;
 
