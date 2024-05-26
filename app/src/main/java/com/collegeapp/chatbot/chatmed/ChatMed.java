@@ -127,7 +127,7 @@ public class ChatMed<ChatClientInfo>
 
                 sendMsg.apply(responsible, result);
             }
-            else if(msg.equals("quais são os doutores"))
+            else if(msg.equals("quais são os doutores") || msg.equals("quais sao os doutores"))
             {
                 doctorCache = getDoctors.apply();
 
