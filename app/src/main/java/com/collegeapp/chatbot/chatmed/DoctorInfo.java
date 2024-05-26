@@ -38,7 +38,7 @@ public class DoctorInfo
 
     public String toString()
     {
-        String result = name + "[avaliação " + rating + "] - ";
+        String result = name + "[nota " + rating + "] - ";
         for(int i = 0; i < professions.size(); ++i)
         {
             if(i == 0)
