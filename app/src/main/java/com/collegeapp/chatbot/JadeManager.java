@@ -1,5 +1,7 @@
 package com.collegeapp.chatbot;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +26,7 @@ public class JadeManager
     public void Initialize()
     {
         jadeThread = new Thread(this::JadeProcess);
-        received = Collections.synchronizedList(new ArrayList<>());
+        received = new ArrayList<>();
         jadeThread.start();
     }
 
@@ -47,8 +49,13 @@ public class JadeManager
             mutex.lock();
             int size = received.size();
             if(size == 0) return null;
+            Log.d("addendum", "popped with size " + size + "removing 1");
 
             return received.remove(size - 1);
+        }
+        catch (Exception e)
+        {
+            return null;
         }
         finally {
             mutex.unlock();

@@ -1,6 +1,7 @@
 package com.collegeapp.chatbot;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CollegeappBotscreen extends AppCompatActivity
         implements View.OnClickListener
@@ -59,7 +61,7 @@ public class CollegeappBotscreen extends AppCompatActivity
     public synchronized void addToChat(String message, boolean byClient)
     {
         if(byClient) jadeManager.notifyClientMessage(message);
-
+        if(byClient) Log.w("addendum", "msg");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

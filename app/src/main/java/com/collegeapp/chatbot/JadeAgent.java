@@ -1,5 +1,7 @@
 package com.collegeapp.chatbot;
 
+import android.util.Log;
+
 import com.collegeapp.chatbot.chatmed.ChatMed;
 import com.collegeapp.chatbot.chatmed.CommandOnClient;
 import com.collegeapp.chatbot.chatmed.DoctorAccess;
@@ -63,74 +65,8 @@ public class JadeAgent extends Agent
         String cmsg = owner.popClientMessage();
         while (cmsg != null)
         {
-
             chatMed.receiveMessage(sampleUser, cmsg);
-            /*
-            if(cmsg.equals("oi"))
-                owner.notifyBotMessage("Olá, atendimento do fast food aqui.");
-            else if(cmsg.contains("google"))
-                owner.notifyBotMessage("Não tenho nenhuma função relacionada ao Google.");
-            else if(cmsg.equals("olá"))
-                owner.notifyBotMessage("Oi! :] Atendimento do fast food aqui.");
-            else if(cmsg.equals("cardapio"))
-            {
-                String send = "";
-                if(Items.length > 0)
-                {
-                    for(int i = 0; i < Items.length; ++i)
-                    {
-                        send += (i + 1) +  ". " + Items[i];
-                        if(i != Items.length - 1) send += "\n";
-                    }
-                    owner.notifyBotMessage(send);
-                }
-            }
-            else if(cmsg.contains("eu quero"))
-            {
-                for(int i = 0; i < Items.length; ++i)
-                {
-                    String curr = Items[i];
-
-                    if(cmsg.contains(curr.toLowerCase()))
-                    {
-                        Selected.add(curr);
-                        owner.notifyBotMessage("Sua escolha foi adicionada.");
-                    }
-                }
-            }
-            else if(cmsg.contains("minhas compras"))
-            {
-                String send = "";
-                if(Selected.size() > 0)
-                {
-                    for(int i = 0; i < Selected.size(); ++i)
-                    {
-                        send += (i + 1) +  ". " + Selected.get(i);
-                        if(i != Selected.size() - 1) send += "\n";
-                    }
-                }
-                else send = "Nenhum items encontrado.";
-
-                owner.notifyBotMessage(send);
-            }
-            else if(cmsg.equals("comfirmar minha compra"))
-            {
-                confirmingChoices = true;
-                owner.notifyBotMessage("Você tem certeza?");
-            }
-            else if(confirmingChoices && cmsg.equals("sim"))
-            {
-                confirmingChoices = false;
-                Selected.clear();
-                owner.notifyBotMessage("Sua compra foi confirmada e esta sendo enviada para você.");
-            }
-            else if(confirmingChoices && cmsg.equals("não"))
-            {
-                confirmingChoices = false;
-                owner.notifyBotMessage("Confirmação de compra abortada.");
-            }
-
-            */
+            cmsg = owner.popClientMessage();
         }
     }
     static void sendMsg(TestChatClientInfo c, String msg)
