@@ -21,6 +21,12 @@ public class ChatMed<ChatClientInfo>
 
     ArrayList<Appointment<ChatClientInfo>> appointments = new ArrayList<Appointment<ChatClientInfo>>();
 
+    /**
+     *
+     * @param funcSendMsg A função para este sistema mandar mensagens para o cliente.
+     * @param funcGetDoctors A função para este sistema ver quais doutores existem.
+     * @param onTryRate A função que é chamada quando o usuário tenta dar uma nota á um medico.
+     */
     public ChatMed(CommandOnClient<ChatClientInfo> funcSendMsg, DoctorAccess funcGetDoctors, DoctorRate<ChatClientInfo> onTryRate)
     {
         sendMsg = funcSendMsg;
@@ -28,21 +34,38 @@ public class ChatMed<ChatClientInfo>
         rateDoctor = onTryRate;
     }
 
+    /**
+     * Coloca uma consulta vaga no sistema.
+     * @param who Com que doutor.
+     * @param when Quando.
+     */
     public void insertAppointmentVacancy(DoctorInfo who, Calendar when)
     {
         vacantAppointments.add(new UnassignedAppointment(who, when));
     }
 
+    /**
+     *
+     * @return Retorna as consultas vagas.
+     */
     public ArrayList<UnassignedAppointment> getVacantAppointments ()
     {
         return vacantAppointments;
     }
 
+    /**
+     * Remove uma consulta vaga no sistema.
+     * @param idx Numero da consulta, use getVacantAppointments para isto.
+     */
     public void removeVacantAppointment (int idx)
     {
         vacantAppointments.remove(idx);
     }
 
+    /**
+     * Esta função deve ser chamada pelo menos 1 vez por segundo,
+     ela é o 'coração' da classe.
+     */
     public void tick()
     {
         for(int i = appointments.size(); i > 0; ++i)
@@ -50,6 +73,7 @@ public class ChatMed<ChatClientInfo>
             int idx = i-1;
             Appointment<ChatClientInfo> curr = appointments.get(i);
 
+            //Remover consultas que já estão em andamento.
             if(curr.when.after(Calendar.getInstance()))
             {
                 appointments.remove(idx);
@@ -75,7 +99,13 @@ public class ChatMed<ChatClientInfo>
         }
     }
 
-    ///Method that should be called when receiving messages from a client.
+    /**
+     * Esta função trata as mensagens do cliente,
+     * ela deve ser chamada toda a vez que o cliente
+     * dá uma mensagem apropriada para este sistema.
+     * @param responsible
+     * @param msg
+     */
     public void receiveMessage(ChatClientInfo responsible, String msg)
     {
         try
@@ -93,6 +123,7 @@ public class ChatMed<ChatClientInfo>
                 result += "\n\"consultas disponíveis\"";
                 result += "\n\"avaliar <nome do doutor> <pontos>\"";
                 result += "\n\"agendar <numero da consulta disponivel>\"";
+                result += "\n\"recomendar <profissão>\"";
 
                 sendMsg.apply(responsible, result);
             }
@@ -241,6 +272,9 @@ public class ChatMed<ChatClientInfo>
         }
     }
 
+    /**
+     * Classe que representa uma consulta vaga.
+     */
     public class UnassignedAppointment
     {
         public DoctorInfo withwho;
@@ -253,6 +287,10 @@ public class ChatMed<ChatClientInfo>
         }
     }
 
+    /**
+     * Classe que representa uma consulta marcada.
+     * @param <ChatClientInfo>
+     */
     private class Appointment<ChatClientInfo>
     {
         public ChatClientInfo cinfo;

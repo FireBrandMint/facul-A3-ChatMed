@@ -19,18 +19,6 @@ public class JadeAgent extends Agent
 
     static boolean init = true;
 
-    static String[] Items = new String[]
-    {
-        "Burger",
-        "Fritas",
-        "Cola",
-        "Sorvete"
-    };
-
-    static ArrayList<String> Selected = new ArrayList<String>();
-
-    static boolean confirmingChoices = false;
-
     static TestChatClientInfo sampleUser = new TestChatClientInfo("Booris");
 
     static DoctorInfo[] doctors =
@@ -146,7 +134,6 @@ public class JadeAgent extends Agent
             */
         }
     }
-
     static void sendMsg(TestChatClientInfo c, String msg)
     {
         JadeManager.Singleton.notifyBotMessage(msg);
