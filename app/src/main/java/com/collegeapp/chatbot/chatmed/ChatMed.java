@@ -1,5 +1,9 @@
 package com.collegeapp.chatbot.chatmed;
 
+import android.util.Log;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -68,23 +72,28 @@ public class ChatMed<ChatClientInfo>
      */
     public void tick()
     {
-        for(int i = appointments.size(); i > 0; ++i)
+        for(int i = appointments.size(); i > 0; --i)
         {
             int idx = i-1;
-            Appointment<ChatClientInfo> curr = appointments.get(i);
+            Appointment<ChatClientInfo> curr = appointments.get(idx);
 
             //Remover consultas que já estão em andamento.
-            if(curr.when.after(Calendar.getInstance()))
+            if(Calendar.getInstance().after(curr.when))
             {
                 appointments.remove(idx);
+                Log.d("addendum", "p1");
                 continue;
             }
 
             //Uma hora antes da consulta, o sistema vai lembrar a pessoa que a consulta
             //existe.
-            if(!curr.reminded && curr.when.getTimeInMillis() + 3600000L > Calendar.getInstance().getTimeInMillis())
+            Calendar nowp1 = Calendar.getInstance();
+            nowp1.add(Calendar.HOUR,-1);
+
+            if(!curr.reminded && curr.when.after(nowp1))
             {
-                int hora = curr.when.get(Calendar.HOUR);
+                Log.d("addendum", "p2");
+                int hora = curr.when.get(Calendar.HOUR_OF_DAY);
                 int minutos = curr.when.get(Calendar.MINUTE);
                 String parteddia = curr.when.get(Calendar.AM_PM) == Calendar.AM ? "manhã" : "tarde";
                 sendMsg.apply
@@ -119,15 +128,17 @@ public class ChatMed<ChatClientInfo>
             if(msg.equals("ajuda"))
             {
                 String result = "Mensagens conhecidas:";
-                result += "\n\"quais são os doutores\"";
-                result += "\n\"consultas disponíveis\"";
-                result += "\n\"avaliar <nome do doutor> <pontos>\"";
-                result += "\n\"agendar <numero da consulta disponivel>\"";
-                result += "\n\"recomendar <profissão>\"";
+                result += "\n\"Lista de doutores\"";
+                result += "\n\"Consultas disponíveis\"";
+                result += "\n\"Avaliar <nome do doutor> <pontos>\"";
+                result += "\n\"Agendar <numero da consulta disponivel>\"";
+                result += "\n\"Recomendar <especialidade>\"";
 
                 sendMsg.apply(responsible, result);
             }
-            else if(msg.equals("quais são os doutores") || msg.equals("quais sao os doutores"))
+            //esse if aq
+            //já tem sensitividade pq o enterpretador transforma em minusculo
+            else if(msg.equals("lista de doutores"))
             {
                 doctorCache = getDoctors.apply();
 
@@ -135,7 +146,7 @@ public class ChatMed<ChatClientInfo>
 
                 for(int i = 0; i < doctorCache.length; ++i)
                 {
-                    if(i != 0) result += "\n";
+                    if(i != 0) result += "\n\n";
                     result += doctorCache[i].toString();
                 }
 
@@ -151,8 +162,8 @@ public class ChatMed<ChatClientInfo>
                 {
                     UnassignedAppointment curr = vacantAppointments.get(i);
 
-                    if(i == 0) result += i + ". " + curr.withwho.toString() + ". Horario: " + curr.when;
-                    else result += '\n' + i + ". " + curr.withwho.toString() + ". Horario: " + curr.when;
+                    if(i == 0) result += i + ". " + curr.withwho.toString() + ". Data: " + calenStr(curr.when);
+                    else result += "\n\n" + i + ". " + curr.withwho.toString() + ". Data: " + calenStr(curr.when);
                 }
 
                 if(vacantAppointments.size() > 0) sendMsg.apply(responsible, result);
@@ -180,7 +191,7 @@ public class ChatMed<ChatClientInfo>
                 {
                     DoctorInfo curr = doctorCache[i];
 
-                    if(curr.name.equals(name))
+                    if(curr.name.toLowerCase().equals(name))
                     {
                         subject = curr;
                         break;
@@ -212,6 +223,8 @@ public class ChatMed<ChatClientInfo>
                     appointments.add(new Appointment<ChatClientInfo>(responsible, curr.when, curr.withwho));
 
                     vacantAppointments.remove(choice);
+
+                    sendMsg.apply(responsible, "Consulta para data " + calenStr(curr.when) + " agendada.");
                 }
                 else
                 {
@@ -234,10 +247,12 @@ public class ChatMed<ChatClientInfo>
                     DoctorInfo curr = vacantAppointments.get(i).withwho;
 
                     boolean desired = false;
+                    //agora vai
 
                     for(int i2 = 0; i2 < curr.professions.size(); ++i2)
                     {
-                        if(profession.equals(curr.professions.get(i2)))
+                        //essa linha aq é o culpado kkk
+                        if(profession.equals(curr.professions.get(i2).toLowerCase()))
                         {
                             desired = true;
                             break;
@@ -256,7 +271,7 @@ public class ChatMed<ChatClientInfo>
                 {
                     UnassignedAppointment appointment = vacantAppointments.get(unassignedAppointmentIndex);
 
-                    sendMsg.apply(responsible, "A melhor consulta disponível é a consulta " + unassignedAppointmentIndex + " uma com o doltor " + chosen.name + " com avaliação de " + chosen.rating + " pontos, se selecionada esta consulta vai ocorrer na data " + appointment.when + '.');
+                    sendMsg.apply(responsible, "A melhor consulta disponível é a consulta numero " + unassignedAppointmentIndex + " com o(a) doutor(a) " + chosen.name + " que tem a avaliação de " + chosen.rating + " pontos, se selecionada: esta consulta vai ocorrer na data " + calenStr(appointment.when) + '.');
                 }
 
                 doctorCache = null;
@@ -272,6 +287,13 @@ public class ChatMed<ChatClientInfo>
         }
     }
 
+    private String calenStr(Calendar when)
+    {
+        String day = new SimpleDateFormat("dd/MM/yyyy").format(when.getTime());
+        String time = new SimpleDateFormat("hh:mm").format(when.getTime());
+        return day + " as " + time + (when.get(Calendar.AM_PM) == 0 ? "AM":"PM");
+    }
+
     /**
      * Classe que representa uma consulta vaga.
      */
@@ -285,6 +307,7 @@ public class ChatMed<ChatClientInfo>
             this.withwho = withwho;
             this.when = when;
         }
+
     }
 
     /**
